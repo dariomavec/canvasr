@@ -7,8 +7,8 @@
 canvas_template(
   width = 300,
   height = 500,
-  background_color = "#FDF5E6",
-  square_color = "#933A16",
+  bg_color = "#ffffff",
+  accent_color = "#933A16",
   file_name = "canvas03",
   ...
 )
