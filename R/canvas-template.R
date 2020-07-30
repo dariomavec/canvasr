@@ -11,8 +11,8 @@
 canvas_template <- function(
   width = 300,
   height = 500,
-  background_color = '#FDF5E6',
-  square_color = '#933A16',
+  bg_color = '#ffffff',
+  accent_color = '#933A16',
   file_name = 'canvas03',
   ...
   )
@@ -20,16 +20,16 @@ canvas_template <- function(
   plot_centre <- c(0, 0)
 
   grid <- expand_grid(
-    x = seq(0, width, by = squareHeight),
-    y = seq(0, height, by = squareHeight)
+    x = seq(-width/2, width/2, by = width / 10),
+    y = seq(-height/2, height/2, by = height / 10)
   )
 
   plot <- grid %>%
     ggplot() +
     theme_void() +
     theme(
-      panel.background = element_rect(fill = background_color),
-      plot.background = element_rect(fill = background_color),
+      panel.background = element_rect(fill = bg_color),
+      plot.background = element_rect(fill = bg_color),
       panel.grid = element_blank(),
       panel.border = element_blank()
       ) +
