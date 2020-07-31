@@ -11,6 +11,7 @@
 canvas06 <- function(
   width = 300,
   height = 500,
+  squareHeight = 50,
   bg_color = '#ffffff',
   accent_color = '#933A16',
   file_name = 'canvas06',
@@ -19,7 +20,6 @@ canvas06 <- function(
   )
 {
   plot_centre <- c(0, 0)
-  squareHeight <- 50
 
   grid <- expand_grid(
     x = seq(-(width + squareHeight) / 2, (width + squareHeight) / 2, by = squareHeight),

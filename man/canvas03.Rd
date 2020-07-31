@@ -6,7 +6,7 @@
 \usage{
 canvas03(
   width = 300,
-  height = 600,
+  height = 500,
   background_color = "#8D8741",
   line_color = "#FBEEC1",
   file_name = "canvas03",

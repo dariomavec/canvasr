@@ -16,6 +16,7 @@ save_plot <- function(
   height,
   path = 'output',
   echo = TRUE,
+  trim = TRUE,
   ...) {
   dir.create(glue("{path}/{file_name}/"), showWarnings = FALSE)
   temp_path <- glue("{path}/{file_name}/{format(Sys.time(), '%y-%m-%d-%H-%M-%S')}.png")
@@ -33,8 +34,9 @@ save_plot <- function(
                   device = 'png')
 
   fig <- output_path %>%
-    image_read() %>%
-    image_trim()
+    image_read()
+
+  if (trim) fig <- fig %>% image_trim()
 
   image_write(fig, output_path)
   image_write(fig, temp_path)
@@ -43,14 +45,16 @@ save_plot <- function(
 #' @import magick
 save_gif <- function(
   file_name,
-  path = 'output') {
+  path = 'output',
+  repeat_last = 12,
+  fps = 4) {
   files <- list.files(path=glue("{path}/{file_name}/"), pattern = '*.png', full.names = TRUE)
-  files <- c(rep(last(files), 12), files)
+  files <- c(rep(last(files), repeat_last), files)
 
   files %>%
     image_read() %>% # reads each path file
     image_join() %>% # joins image
-    image_animate(fps=5) %>% # animates, can opt for number of loops
+    image_animate(fps=fps) %>% # animates, can opt for number of loops
     image_write(glue("{path}/{file_name}.gif"))
 }
 
@@ -65,7 +69,7 @@ rotate_poly <- function(poly, origin, theta = -pi / 10) {
   })
 }
 
-square_from_centre <- function(origin, height, rotate = FALSE, theta = -pi / 10) {
+square <- function(origin, height, rotate = FALSE, theta = -pi / 10) {
   xmin = origin[1] - height / 2
   xmax = origin[1] + height / 2
   ymin = origin[2] - height / 2

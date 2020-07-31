@@ -8,14 +8,14 @@
 #' @import tidyr
 #' @import purrr
 #' @importFrom glue glue
-canvas2 <- function(
+canvas02 <- function(
   width = 300,
   height = 500,
   theta = -pi / 48,
   scale = 1.15,
   n_steps = 60,
   background_color = '#db451f',
-  file_name = 'canvas2',
+  file_name = 'canvas02',
   ...
   )
 {
@@ -25,22 +25,16 @@ canvas2 <- function(
     mutate(
       polys = map(id,
                   ~{
-                    square_from_centre(
-                      origin = c(0,0),
-                      height = (scale ** .x) * (height / 100),
-                      rotate = TRUE,
-                      theta = .x * theta
-                    )
-                  }
-      )
+                    s <- square(0, 0, (scale ** .x) * (height / 100))
+                    rotate(s, .x * theta)
+                  }),
+      coords = map(polys, 'pts')
     ) %>%
-    unnest(polys) %>%
-    rename(coords = polys)
+    select(-polys) %>%
+    unnest(coords)
 
   plot <- grid %>%
-    ggplot(aes(x = map_dbl(coords, 1),
-               y = map_dbl(coords, 2),
-               group = factor(id))) +
+    ggplot(aes(x, y, group = factor(id))) +
     geom_path(colour = 'white') +
     theme_void() +
     theme(

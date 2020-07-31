@@ -17,7 +17,7 @@ canvas05(
   b0 = 6,
   b1 = 9,
   top = height/3,
-  bottom = height/2,
+  bottom = -height/2,
   ...
 )
 }

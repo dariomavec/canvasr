@@ -11,7 +11,7 @@
 #' @importFrom glue glue
 canvas03 <- function(
   width = 300,
-  height = 600,
+  height = 500,
   background_color = '#8D8741',
   line_color = '#FBEEC1',
   file_name = 'canvas03',
@@ -37,29 +37,30 @@ canvas03 <- function(
     id = rep(1:2, each = 2)
   )
 
-  diamond <- function(x, y, r) {
+  diamond <- function(x, y, r, ratio = 2) {
     list(
       c(x, y+r),
-      c(x+r/2, y),
+      c(x+r/ratio, y),
       c(x, y-r),
-      c(x-r/2, y),
+      c(x-r/ratio, y),
       c(x, y+r)
     )
   }
 
   diamonds <- expand_grid(
       x = 0, y = 0,
-      r = 180 + 1:3 * 40
+      r = 130 + 1:3 * 40
     ) %>%
     bind_rows(
       expand_grid(
-        x = c(-width/2, width/2), y = 0,
-        r = 300
+        x = c(-width/2, width/2),
+        y = 0,
+        r = 250
       )
     ) %>%
     mutate(
       id = paste0(x, y, r),
-      points = pmap(list(x, y, r), diamond)) %>%
+      points = pmap(list(x, y, r), diamond, ratio = height / width)) %>%
     unnest(points)
 
   plot <- ggplot() +

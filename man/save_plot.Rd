@@ -4,7 +4,16 @@
 \alias{save_plot}
 \title{Save Plot}
 \usage{
-save_plot(plot, file_name, width, height, path = "output", echo = TRUE, ...)
+save_plot(
+  plot,
+  file_name,
+  width,
+  height,
+  path = "output",
+  echo = TRUE,
+  trim = TRUE,
+  ...
+)
 }
 \arguments{
 \item{path}{}
