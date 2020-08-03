@@ -13,7 +13,7 @@ canvas_template <- function(
   height = 500,
   bg_color = '#ffffff',
   accent_color = '#933A16',
-  file_name = 'canvas03',
+  file_name = '___',
   ...
   )
 {
@@ -31,7 +31,8 @@ canvas_template <- function(
       panel.background = element_rect(fill = bg_color),
       plot.background = element_rect(fill = bg_color),
       panel.grid = element_blank(),
-      panel.border = element_blank()
+      panel.border = element_blank(),
+      legend.position = 'none'
       ) +
     coord_equal(xlim = c(-width/2, width/2),
                 ylim = c(-height/2, height/2),
