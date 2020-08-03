@@ -126,51 +126,6 @@ translate.poly <- function(poly, x, y) {
   return(poly)
 }
 
-
-bisect_square <- function(s, m = c(1, -1, 0, Inf)) {
-  stopifnot(m %in% c(1, -1, 0, Inf))
-  s1 <- s2 <- s
-
-  if (m == 1) {
-    s1$pts <- s$pts[c(1:3, 1),]
-    s2$pts <- s$pts[c(1, 3:5),]
-
-    class(s1) <- class(s2) <- c('triangle', 'poly')
-  } else if (m == -1) {
-    s1$pts <- s$pts[c(1:2, 4:5),]
-    s2$pts <- s$pts[c(2:4, 2),]
-
-    class(s1) <- class(s2) <- c('triangle', 'poly')
-  } else if (m == 0) {
-    midpoint <- sum(s$pts$y[1:2])/2
-    s1$pts <- tribble(
-      ~x, ~y,
-      s$pts$x[1], s$pts$y[1],
-      s$pts$x[1], midpoint,
-      s$pts$x[4], midpoint,
-      s$pts$x[4], s$pts$y[1],
-      s$pts$x[1], s$pts$y[1],
-    )
-    s2$pts <- s1$pts %>%
-      mutate(y = y + midpoint)
-  } else if (m == Inf) {
-    midpoint <- (s$pts$x[3] - s$pts$y[4])/2
-
-    s1$pts <- tribble(
-      ~x, ~y,
-      s$pts$x[1], s$pts$y[1],
-      s$pts$x[2], s$pts$y[2],
-      midpoint, s$pts$y[3],
-      midpoint, s$pts$y[4],
-      s$pts$x[5], s$pts$y[5]
-    )
-    s2$pts <- s1$pts %>%
-      mutate(x = x + midpoint)
-  }
-
-  output <- list(s1, s2)
-}
-
 split_square <- function(s) {
   list(
     square(s$x - s$h/4, s$y - s$h/4, s$h/2),
@@ -190,8 +145,8 @@ split_poly <- function(poly, side1, side2, p1=0.5, p2=0.5) {
   poly1 <- poly2 <- poly
 
   new_pts <- list(
-    (1 - p1) * s$pts[side1,] + p1 * s$pts[(side1 + 1),],
-    (1 - p2) * s$pts[side2,] + p2 * s$pts[(side2 + 1),]
+    (1 - p1) * poly$pts[side1,] + p1 * poly$pts[(side1 + 1),],
+    (1 - p2) * poly$pts[side2,] + p2 * poly$pts[(side2 + 1),]
   )
 
   poly1$pts <- bind_rows(
@@ -263,4 +218,14 @@ print.poly <- function(x, ...) {
 #' @examples
 print.triangle <- function(x, ...) {
   cat(glue("triangle: ({x$x}, {x$y}, {x$h})"))
+}
+
+split_squares_deep <- function(square, depth = 1) {
+  square <- split_square(square)
+
+  if (depth >= 1) {
+    square <- map(square, split_squares_deep, depth = depth - 1) %>%
+      flatten()
+  }
+  return(square)
 }

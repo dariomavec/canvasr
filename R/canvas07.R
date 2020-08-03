@@ -11,10 +11,13 @@
 canvas07 <- function(
   width = 300,
   height = 500,
-  h = 100,
+  h = 25,
   bg_color = '#000000',
-  colors = c("#6565a4","#cdedfd","#b6dcfe","#a9f8fb","#31999b"),
+  colors = c("#31999b","#cdedfd","#6565a4","#b6dcfe","#a9f8fb"),
   file_name = 'canvas07',
+  depth = 3,
+  r1 = 0.60,
+  exp = 8,
   ...
   )
 {
@@ -23,63 +26,45 @@ canvas07 <- function(
   x <- seq(-width/2, width/2, by = h)
   y <- seq(-height/2, height/2, by = h)
 
-  output <- list()
-  for (i in x) {
-    for (j in y) {
-      s <- list(square(i, j, h))
-      m <- sample(c(-1, 1), 1)
-      r <- runif(1)
-
-      if (r < 0) {
-        s <- map(s, bisect_square, m = m) %>%
-          flatten()
+  split_diagonal <- function(poly, r1 = 0.25) {
+    r <- runif(1)
+    if (r > (1 - r1)) {
+      split_type <- sample(c('ltr', 'rtl'), 1)
+      if (split_type == 'ltr') {
+        poly <- split_poly(poly, 1, 2, 0, 1)
+      } else if (split_type == 'rtl') {
+        poly <- split_poly(poly, 1, 3, 1, 1)
       }
-      else if (r < 4) {
-        s <- map(s, split_square) %>%
-          flatten() %>%
-          map(
-           ~{
-             if (runif(1) < 0.25) {
-               m <- sample(c(-1, 1), 1)
-               bisect_square(.x, m) %>%
-                 flatten()
-             }
-             else .x
-           }
-          )
-        }
-      }
-      output <- append(output, s)
+      return(poly)
     }
+    else return(list(poly))
+  }
 
-  # grid <- expand_grid(
-  #   x = seq(-width/2, width/2, by = h),
-  #   y = seq(-height/2, height/2, by = h)
-  # ) %>%
-  #   mutate(s = map2(x, y, square, h = h),
-  #          m = sample(c(-1, 1), n(), replace = T),
-  #          r = runif(n()),
-  #          s = pmap(list(s, m, r), function(s, m, r) {
-  #            if (r < 0.25) bisect_square(s, m)
-  #            else if (r < 0.4) map2(split_square(s),
-  #                                   sample(c(-1,1), 4, replace = T),
-  #                                   bisect_square) %>%
-  #              flatten()
-  #            else list(s)
-  #          })) %>%
-  #   unnest(s) %>%
-  #   mutate(id = 1:n(),
-  #          coords = map(s, 'pts'),
-  #          x0 = map_dbl(s, 'x'),
-  #          y0 = map_dbl(s, 'y'),
-  #          fill = sample(colors, n(), replace = T)) %>%
-  #   select(-x, -y, -s) %>%
-  #   unnest(coords)
+  grid <- expand_grid(
+    x = seq(-width/2, width/2, by = h),
+    y = seq(-height/2, height/2, by = h)
+  ) %>%
+    mutate(polys = map2(x, y, square, h = h),
+           depth = depth * (1 - ((x**2 + y**2) / (max(x**2 + y**2))))**exp,
+           depth = round(depth, 0),
+           polys = map2(polys, depth, split_squares_deep)) %>%
+    unnest(polys) %>%
+    mutate(polys = map(polys, split_diagonal, r1 = r1)) %>%
+    unnest(polys) %>%
+    mutate(id = 1:n(),
+           coords = map(polys, 'pts'),
+           x0 = map_dbl(polys, 'x'),
+           y0 = map_dbl(polys, 'y'),
+           p_colour = 0.5 * (1 - ((x0**2 + y0**2) / (max(x0**2 + y0**2))))**exp,
+           fill = map_chr(p_colour, ~sample(colors, 1,
+                                            prob = c(.x, rep(0.25, 4))))
+           ) %>%
+    select(-x, -y, -polys) %>%
+    unnest(coords)
 
   plot <- grid %>%
     ggplot() +
-    geom_polygon(aes(x, y, group = id, fill = fill), size=0) +
-    # geom_point(aes(x0, y0)) +
+    geom_polygon(aes(x, y, group = id, fill = fill)) +#, colour = 'gray50', size = 0.1) +
     theme_void() +
     scale_fill_manual(values = colors) +
     theme(
