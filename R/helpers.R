@@ -47,14 +47,24 @@ save_gif <- function(
   file_name,
   path = 'output',
   repeat_last = 12,
-  fps = 4) {
+  fps = 4,
+  optimize = TRUE) {
   files <- list.files(path=glue("{path}/{file_name}/"), pattern = '*.png', full.names = TRUE)
   files <- c(rep(last(files), repeat_last), files)
+  final_img <- image_read(files[1]) %>%
+    image_info()
+  if (optimize) {
+    final_geometry <- paste0(round(final_img$width / 3, 0), 'x',
+                             round(final_img$height / 3, 0))#, '!"')
+  }
 
   files %>%
     image_read() %>% # reads each path file
     image_join() %>% # joins image
-    image_animate(fps=fps) %>% # animates, can opt for number of loops
+    image_apply(function(x) x %>%
+                  image_resize(final_geometry) %>%
+                  image_extent(final_geometry)) %>%
+    image_animate(fps=fps, optimize = optimize) %>% # animates, can opt for number of loops
     image_write(glue("{path}/{file_name}.gif"))
 }
 
