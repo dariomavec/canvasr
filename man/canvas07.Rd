@@ -7,8 +7,9 @@
 canvas07(
   width = 300,
   height = 500,
-  bg_color = "#ffffff",
-  accent_color = "#933A16",
+  h = 100,
+  bg_color = "#000000",
+  colors = c("#6565a4", "#cdedfd", "#b6dcfe", "#a9f8fb", "#31999b"),
   file_name = "canvas07",
   ...
 )

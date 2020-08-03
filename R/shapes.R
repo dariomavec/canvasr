@@ -32,9 +32,10 @@ new_square <- function(x, y, h) {
     list(
       pts = pts,
       x = x,
-      y = y
+      y = y,
+      h = h
     ),
-    class = 'poly'
+    class = c('square', 'poly')
   )
 }
 
@@ -123,4 +124,143 @@ translate.poly <- function(poly, x, y) {
   poly$x <- poly$x - y
 
   return(poly)
+}
+
+
+bisect_square <- function(s, m = c(1, -1, 0, Inf)) {
+  stopifnot(m %in% c(1, -1, 0, Inf))
+  s1 <- s2 <- s
+
+  if (m == 1) {
+    s1$pts <- s$pts[c(1:3, 1),]
+    s2$pts <- s$pts[c(1, 3:5),]
+
+    class(s1) <- class(s2) <- c('triangle', 'poly')
+  } else if (m == -1) {
+    s1$pts <- s$pts[c(1:2, 4:5),]
+    s2$pts <- s$pts[c(2:4, 2),]
+
+    class(s1) <- class(s2) <- c('triangle', 'poly')
+  } else if (m == 0) {
+    midpoint <- sum(s$pts$y[1:2])/2
+    s1$pts <- tribble(
+      ~x, ~y,
+      s$pts$x[1], s$pts$y[1],
+      s$pts$x[1], midpoint,
+      s$pts$x[4], midpoint,
+      s$pts$x[4], s$pts$y[1],
+      s$pts$x[1], s$pts$y[1],
+    )
+    s2$pts <- s1$pts %>%
+      mutate(y = y + midpoint)
+  } else if (m == Inf) {
+    midpoint <- (s$pts$x[3] - s$pts$y[4])/2
+
+    s1$pts <- tribble(
+      ~x, ~y,
+      s$pts$x[1], s$pts$y[1],
+      s$pts$x[2], s$pts$y[2],
+      midpoint, s$pts$y[3],
+      midpoint, s$pts$y[4],
+      s$pts$x[5], s$pts$y[5]
+    )
+    s2$pts <- s1$pts %>%
+      mutate(x = x + midpoint)
+  }
+
+  output <- list(s1, s2)
+}
+
+split_square <- function(s) {
+  list(
+    square(s$x - s$h/4, s$y - s$h/4, s$h/2),
+    square(s$x - s$h/4, s$y + s$h/4, s$h/2),
+    square(s$x + s$h/4, s$y + s$h/4, s$h/2),
+    square(s$x + s$h/4, s$y - s$h/4, s$h/2)
+  )
+}
+
+split_poly <- function(poly, side1, side2, p1=0.5, p2=0.5) {
+  stopifnot(0 < side1 & side1 < side2)
+  stopifnot(side2 < nrow(poly$pts))
+  stopifnot(0 <= p1 & p1 <= 1)
+  stopifnot(0 <= p2 & p2 <= 1)
+
+  poly$h <- NULL
+  poly1 <- poly2 <- poly
+
+  new_pts <- list(
+    (1 - p1) * s$pts[side1,] + p1 * s$pts[(side1 + 1),],
+    (1 - p2) * s$pts[side2,] + p2 * s$pts[(side2 + 1),]
+  )
+
+  poly1$pts <- bind_rows(
+    poly$pts[1:side1,],
+    new_pts[[1]],
+    new_pts[[2]],
+    poly$pts[(side2+1):nrow(poly$pts),],
+  )
+  poly1 <- update_centroid(poly1)
+
+  poly2$pts <- bind_rows(
+    new_pts[[2]],
+    new_pts[[1]],
+    poly$pts[(side1 + 1):side2,],
+    new_pts[[2]]
+  )
+  poly2 <- update_centroid(poly2)
+
+  return(list(poly1, poly2))
+}
+
+update_centroid <- function(poly) {
+  x <- poly$pts$x[-1]
+  y <- poly$pts$y[-1]
+
+  centroid_x <- centroid_y <- determinant <- 0
+  for (i in 1:length(x)) {
+    if (i == length(x)) {
+      j <- 1
+    } else {
+      j <- i + 1
+    }
+
+    vertex_determinant <- x[i] * y[j] - x[j] * y[i]
+    determinant <- determinant + vertex_determinant
+
+    centroid_x <- centroid_x + (x[i] + x[j]) * vertex_determinant
+    centroid_y <- centroid_y + (y[i] + y[j]) * vertex_determinant
+  }
+
+  centroid <- c(centroid_x, centroid_y) / (3 * determinant)
+  poly$x <- centroid[1]
+  poly$y <- centroid[2]
+
+  return(poly)
+}
+
+#' Title
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+print.poly <- function(x, ...) {
+  cat(glue("poly: ({x$x}, {x$y})"))
+}
+
+#' Title
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+print.triangle <- function(x, ...) {
+  cat(glue("triangle: ({x$x}, {x$y}, {x$h})"))
 }
