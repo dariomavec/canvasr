@@ -1,4 +1,4 @@
-#' Canvas 2
+#' Canvas _
 #'
 #' @return
 #' @export
@@ -25,18 +25,9 @@ canvas_template <- function(
   )
 
   plot <- grid %>%
-    ggplot() +
-    theme_void() +
-    theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
-      panel.grid = element_blank(),
-      panel.border = element_blank(),
-      legend.position = 'none'
-      ) +
-    coord_equal(xlim = c(-width/2, width/2),
-                ylim = c(-height/2, height/2),
-                expand = FALSE)
+    ggcanvas(aes(x, y),
+             width = width, height = height, bg_color = bgColor) +
+    geom_point()
 
-  save_plot(plot, file_name, height = height, width = width, ...)
+  save_plot(plot, file_name, width = width, height = height, ...)
 }

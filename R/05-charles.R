@@ -30,6 +30,26 @@ canvas05 <- function(
                            x = x + size,
                            y = y + size))
 
+  n_cutouts <- 3
+  # cutouts_2 <- tibble(
+  #   x = c(100, -100, 60),
+  #   y = c(100, 140, -60),
+  #   r = c(30, 35, 30)
+  #   # x = width * runif(n_cutouts, -1/2, 1/2),
+  #   # y = height * runif(n_cutouts, -1/2, 1/2),
+  #   # r = height/10 * runif(n_cutouts, 1/2, 1)
+  # )
+  cutouts_1 <- grid %>%
+    slice_sample(n = 15) %>%
+    mutate(x = x + size / 2,
+           y = y - size / 2) %>%
+    bind_rows(slice_sample(grid, n = 15))
+  # cutouts_2 <- tibble(
+  #   x = 0,
+  #   y = 120,
+  #   r = 30
+  # )
+
   plot <- ggplot() +
     geom_arc_bar(aes(x0 = x, y0 = y, r0 = r0, r = r, start = 3 * pi / 4, end = 7 * pi / 4),
                  data = grid,
@@ -39,6 +59,15 @@ canvas05 <- function(
                  data = mutate(grid, x = x + size/2, y = y - size/2),
                  size = 0,
                  fill = '#6ed3cf') +
+    geom_circle(aes(x0=x, y0=y, r=r),
+                data = cutouts_1,
+                fill = bg_color,
+                size = 0) +
+    # geom_circle(aes(x0=x, y0=y, r=r),
+    #             data = cutouts_2,
+    #             fill = '#6ed3cf',
+    #             colour = '#9068be',
+    #             size = 0.5)  +
     theme_void() +
     theme(
       panel.background = element_rect(fill = bg_color),
@@ -53,4 +82,4 @@ canvas05 <- function(
   save_plot(plot, file_name, height = height, width = width, ...)
 }
 
-# canvas04()
+# canvas05()

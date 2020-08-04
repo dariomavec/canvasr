@@ -1,14 +1,3 @@
-rotate_poly <- function(poly, origin, theta = -pi / 10) {
-  R <- matrix(c(cos(theta), -sin(theta),
-                sin(theta), cos(theta)),
-              nrow = 2)
-
-  map(poly, function(xy) {
-    rotated <- R %*% (xy - origin)
-    rotated[1:2, 1] + origin
-  })
-}
-
 new_square <- function(x, y, h) {
   stopifnot(typeof(x) == 'double')
   stopifnot(typeof(y) == 'double')

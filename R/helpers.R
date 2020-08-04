@@ -134,16 +134,17 @@ make_gradient <- function(deg = 45, n = 100, cols = blues9) {
   )
 }
 
-theme_canvasr <- function(width, height, bg_color) {
-  theme_void() +
+ggcanvas <- function(..., width, height, bg_color) {
+  ggplot(...) +
+    coord_equal(xlim = c(-width/2, width/2),
+                ylim = c(-height/2, height/2),
+                expand = FALSE) +
+    theme_void() +
     theme(
       panel.background = element_rect(fill = bg_color),
       plot.background = element_rect(fill = bg_color),
       panel.grid = element_blank(),
       panel.border = element_blank(),
       legend.position = 'none'
-    ) +
-    coord_equal(xlim = c(-width/2, width/2),
-                ylim = c(-height/2, height/2),
-                expand = FALSE)
+    )
 }

@@ -16,9 +16,9 @@ canvas09 <- function(
   # line_colors = c("#f4e409","#eeba0b","#c36f09","#a63c06","#710000"),
   line_colors = rep(c("#337ca0","#3ec300","#fffc31","#ff1d15","#e13700"), 50),
   file_name = '09-prisma',
-  strips = 15,
+  strips = 10,
   r = 50,
-  n = 60,
+  n = 150,
   ...
   )
 {
@@ -43,22 +43,12 @@ canvas09 <- function(
     select(id, x, y, colour)
 
   plot <- grid %>%
-    ggplot(aes(x, y, group = id, colour = colour)) +
+    ggcanvas(aes(x, y, group = id, colour = colour),
+             width = width, height = height, bg_color = bg_color) +
     geom_path() +
-    scale_colour_manual(values = line_colors) +
-    theme_void() +
-    theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
-      panel.grid = element_blank(),
-      panel.border = element_blank(),
-      legend.position = 'none'
-      ) +
-    coord_equal(xlim = c(-width/2, width/2),
-                ylim = c(-height/2, height/2),
-                expand = FALSE)
+    scale_colour_manual(values = line_colors)
 
   save_plot(plot, file_name, height = height, width = width, ...)
 }
 
-# canvas08()
+# canvas09()
