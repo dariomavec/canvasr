@@ -1,4 +1,4 @@
-#' Canvas 8
+#' Canvas 9
 #'
 #' @return
 #' @export
@@ -8,14 +8,14 @@
 #' @import tidyr
 #' @import purrr
 #' @importFrom glue glue
-canvas08 <- function(
+canvas09 <- function(
   width = 300,
   height = 500,
   bg_color = '#29274C',
   accent_color = '#933A16',
   # line_colors = c("#f4e409","#eeba0b","#c36f09","#a63c06","#710000"),
   line_colors = rep(c("#337ca0","#3ec300","#fffc31","#ff1d15","#e13700"), 50),
-  file_name = 'canvas08',
+  file_name = '09-prisma',
   strips = 15,
   r = 50,
   n = 60,

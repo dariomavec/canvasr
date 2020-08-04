@@ -1,4 +1,4 @@
-#' Canvas 5
+#' Canvas 6
 #'
 #' @return
 #' @export
@@ -8,13 +8,13 @@
 #' @import tidyr
 #' @import purrr
 #' @importFrom glue glue
-canvas05 <- function(
+canvas06 <- function(
   width = 300,
   height = 500,
   bg_color = '#06060a',
   accent_color = '#c49102',
   planet_color = '#c43235',
-  file_name = 'canvas05',
+  file_name = '06-tomorrow',
   n_circles = 6,
   # shrinkage = 15,
   a0 = 120,

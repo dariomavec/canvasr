@@ -15,7 +15,7 @@ canvas02 <- function(
   scale = 1.15,
   n_steps = 60,
   background_color = '#db451f',
-  file_name = 'canvas02',
+  file_name = '02-vertigo',
   ...
   )
 {

@@ -16,7 +16,7 @@ canvas01 <- function(
   background_color = '#FDF5E6',
   square_color = '#933A16',
   square_color_shift = 'gray40',
-  file_name = 'canvas01',
+  file_name = '01-varsarely',
   ...
   )
 {

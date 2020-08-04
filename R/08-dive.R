@@ -1,4 +1,4 @@
-#' Canvas 7
+#' Canvas 8
 #'
 #' @return
 #' @export
@@ -8,13 +8,13 @@
 #' @import tidyr
 #' @import purrr
 #' @importFrom glue glue
-canvas07 <- function(
+canvas08 <- function(
   width = 300,
   height = 500,
   h = 25,
   bg_color = '#000000',
   colors = c("#31999b","#cdedfd","#6565a4","#b6dcfe","#a9f8fb"),
-  file_name = 'canvas07',
+  file_name = '08-dive',
   depth = 3,
   r1 = 0.60,
   exp = 8,

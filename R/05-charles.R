@@ -1,4 +1,4 @@
-#' Canvas 4
+#' Canvas 5
 #'
 #' @return
 #' @export
@@ -8,11 +8,11 @@
 #' @import tidyr
 #' @import purrr
 #' @importFrom glue glue
-canvas04 <- function(
+canvas05 <- function(
   width = 300,
   height = 500,
   bg_color = '#e62739',
-  file_name = 'canvas04',
+  file_name = '05-charles',
   ...
   )
 {

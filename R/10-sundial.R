@@ -1,4 +1,4 @@
-#' Canvas 9
+#' Canvas 10
 #'
 #' @return
 #' @export
@@ -8,12 +8,12 @@
 #' @import tidyr
 #' @import purrr
 #' @importFrom glue glue
-canvas09 <- function(
+canvas10 <- function(
   width = 300,
   height = 500,
   bg_color = '#ffffff',
   accent_color = '#933A16',
-  file_name = 'canvas09',
+  file_name = '10-sundial',
   steps = 40,
     ...
 )
@@ -62,5 +62,3 @@ canvas09 <- function(
 
   save_plot(plot, file_name, height = height, width = width, ...)
 }
-
-canvas09()

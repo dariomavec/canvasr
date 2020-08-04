@@ -14,7 +14,7 @@ canvas03 <- function(
   height = 500,
   background_color = '#8D8741',
   line_color = '#FBEEC1',
-  file_name = 'canvas03',
+  file_name = '03-bergdorf',
   ...
   )
 {
