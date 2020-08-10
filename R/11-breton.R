@@ -52,7 +52,7 @@ canvas11 <- function(
 
   plot <- grid %>%
     ggcanvas(aes(x, y),
-      width = width, height = height, bg_color = bgColor) +
+      width = width, height = height, bgColour = bgColor) +
     geom_polygon(aes(group = id),
                  fill = fillColor,
                  colour = lineColor,

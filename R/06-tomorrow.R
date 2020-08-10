@@ -11,7 +11,7 @@
 canvas06 <- function(
   width = 300,
   height = 500,
-  bg_color = '#06060a',
+  bgColour = '#06060a',
   accent_color = '#c49102',
   planet_color = '#c43235',
   file_name = '06-tomorrow',
@@ -55,7 +55,7 @@ canvas06 <- function(
   )
 
   g <- make_gradient(
-    deg = 90, n = 500, cols = c('#4f8a8b', bg_color, bg_color)
+    deg = 90, n = 500, cols = c('#4f8a8b', bgColour, bgColour)
   )
 
   plot <- ggplot() +
@@ -76,8 +76,8 @@ canvas06 <- function(
               color = accent_color) +
     theme_void() +
     theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
+      panel.background = element_rect(fill = bgColour),
+      plot.background = element_rect(fill = bgColour),
       panel.grid = element_blank(),
       panel.border = element_blank()
       ) +

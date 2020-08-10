@@ -11,7 +11,7 @@
 canvas05 <- function(
   width = 300,
   height = 500,
-  bg_color = '#e62739',
+  bgColour = '#e62739',
   file_name = '05-charles',
   ...
   )
@@ -61,7 +61,7 @@ canvas05 <- function(
                  fill = '#6ed3cf') +
     geom_circle(aes(x0=x, y0=y, r=r),
                 data = cutouts_1,
-                fill = bg_color,
+                fill = bgColour,
                 size = 0) +
     # geom_circle(aes(x0=x, y0=y, r=r),
     #             data = cutouts_2,
@@ -70,8 +70,8 @@ canvas05 <- function(
     #             size = 0.5)  +
     theme_void() +
     theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
+      panel.background = element_rect(fill = bgColour),
+      plot.background = element_rect(fill = bgColour),
       panel.grid = element_blank(),
       panel.border = element_blank()
       ) +

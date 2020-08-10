@@ -11,7 +11,7 @@
 canvas10 <- function(
   width = 300,
   height = 500,
-  bg_color = '#ffffff',
+  bgColour = '#ffffff',
   accent_color = '#933A16',
   file_name = '10-sundial',
   steps = 40,
@@ -50,8 +50,8 @@ canvas10 <- function(
     scale_fill_manual(values = colours) +
     theme_void() +
     theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
+      panel.background = element_rect(fill = bgColour),
+      plot.background = element_rect(fill = bgColour),
       panel.grid = element_blank(),
       panel.border = element_blank(),
       legend.position = 'none'

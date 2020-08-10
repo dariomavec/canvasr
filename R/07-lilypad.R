@@ -12,7 +12,7 @@ canvas07 <- function(
   width = 300,
   height = 500,
   squareHeight = 50,
-  bg_color = '#ffffff',
+  bgColour = '#ffffff',
   accent_color = '#933A16',
   file_name = '07-lilypad',
   colors = c("#beef9e","#a6c36f","#828c51","#335145","#1e352f"),
@@ -42,8 +42,8 @@ canvas07 <- function(
     scale_fill_manual(values = colors) +
     theme_void() +
     theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
+      panel.background = element_rect(fill = bgColour),
+      plot.background = element_rect(fill = bgColour),
       panel.grid = element_blank(),
       panel.border = element_blank(),
       legend.position = 'none'

@@ -11,7 +11,7 @@
 canvas09 <- function(
   width = 300,
   height = 500,
-  bg_color = '#29274C',
+  bgColour = '#29274C',
   accent_color = '#933A16',
   # line_colors = c("#f4e409","#eeba0b","#c36f09","#a63c06","#710000"),
   line_colors = rep(c("#337ca0","#3ec300","#fffc31","#ff1d15","#e13700"), 50),
@@ -44,7 +44,7 @@ canvas09 <- function(
 
   plot <- grid %>%
     ggcanvas(aes(x, y, group = id, colour = colour),
-             width = width, height = height, bg_color = bg_color) +
+             width = width, height = height, bgColour = bgColour) +
     geom_path() +
     scale_colour_manual(values = line_colors)
 

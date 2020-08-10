@@ -12,7 +12,7 @@ canvas08 <- function(
   width = 300,
   height = 500,
   h = 25,
-  bg_color = '#000000',
+  bgColour = '#000000',
   colors = c("#31999b","#cdedfd","#6565a4","#b6dcfe","#a9f8fb"),
   file_name = '08-dive',
   depth = 3,
@@ -68,8 +68,8 @@ canvas08 <- function(
     theme_void() +
     scale_fill_manual(values = colors) +
     theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
+      panel.background = element_rect(fill = bgColour),
+      plot.background = element_rect(fill = bgColour),
       panel.grid = element_blank(),
       panel.border = element_blank(),
       legend.position = 'none'

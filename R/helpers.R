@@ -68,37 +68,6 @@ save_gif <- function(
     image_write(glue("{path}/{file_name}.gif"))
 }
 
-rotate_poly <- function(poly, origin, theta = -pi / 10) {
-  R <- matrix(c(cos(theta), -sin(theta),
-                sin(theta), cos(theta)),
-              nrow = 2)
-
-  map(poly, function(xy) {
-    rotated <- R %*% (xy - origin)
-    rotated[1:2, 1] + origin
-  })
-}
-
-square <- function(origin, height, rotate = FALSE, theta = -pi / 10) {
-  xmin = origin[1] - height / 2
-  xmax = origin[1] + height / 2
-  ymin = origin[2] - height / 2
-  ymax = origin[2] + height / 2
-
-  square <- list(
-    c(xmin, ymin),
-    c(xmin, ymax),
-    c(xmax, ymax),
-    c(xmax, ymin),
-    c(xmin, ymin)
-  )
-
-  if (rotate) square <- rotate_poly(square, origin, theta)
-
-  return(square)
-}
-
-
 #' Make Gradient
 #'
 #' @param deg
@@ -134,15 +103,15 @@ make_gradient <- function(deg = 45, n = 100, cols = blues9) {
   )
 }
 
-ggcanvas <- function(..., width, height, bg_color) {
+ggcanvas <- function(..., width, height, bgColour) {
   ggplot(...) +
     coord_equal(xlim = c(-width/2, width/2),
                 ylim = c(-height/2, height/2),
                 expand = FALSE) +
     theme_void() +
     theme(
-      panel.background = element_rect(fill = bg_color),
-      plot.background = element_rect(fill = bg_color),
+      panel.background = element_rect(fill = bgColour),
+      plot.background = element_rect(fill = bgColour),
       panel.grid = element_blank(),
       panel.border = element_blank(),
       legend.position = 'none'

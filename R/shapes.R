@@ -1,3 +1,39 @@
+new_rectangle <- function(x, y, w, h) {
+  stopifnot(typeof(x) == 'double')
+  stopifnot(typeof(y) == 'double')
+  stopifnot(typeof(h) == 'double')
+
+  xmin <- x - w/2
+  xmax <- x + w/2
+  ymin <- y - h/2
+  ymax <- y + h/2
+
+  pts <- tribble(
+    ~x, ~y,
+    xmin, ymin,
+    xmin, ymax,
+    xmax, ymax,
+    xmax, ymin,
+    xmin, ymin
+  )
+
+  structure(
+    list(
+      pts = pts,
+      x = x,
+      y = y,
+      h = h
+    ),
+    class = c('rectangle', 'poly')
+  )
+}
+
+rectangle <- function(x, y, w, h) {
+  new_rectangle(x, y, w, h)
+}
+
+
+
 new_square <- function(x, y, h) {
   stopifnot(typeof(x) == 'double')
   stopifnot(typeof(y) == 'double')
@@ -124,7 +160,7 @@ split_square <- function(s) {
   )
 }
 
-split_poly <- function(poly, side1, side2, p1=0.5, p2=0.5) {
+split_poly <- function(poly, side1 = 2, side2 = 2, p1=0.5, p2=0.5) {
   stopifnot(0 < side1 & side1 < side2)
   stopifnot(side2 < nrow(poly$pts))
   stopifnot(0 <= p1 & p1 <= 1)
@@ -143,7 +179,8 @@ split_poly <- function(poly, side1, side2, p1=0.5, p2=0.5) {
     new_pts[[1]],
     new_pts[[2]],
     poly$pts[(side2+1):nrow(poly$pts),],
-  )
+  ) %>%
+    as_tibble()
   poly1 <- update_centroid(poly1)
 
   poly2$pts <- bind_rows(
@@ -151,10 +188,28 @@ split_poly <- function(poly, side1, side2, p1=0.5, p2=0.5) {
     new_pts[[1]],
     poly$pts[(side1 + 1):side2,],
     new_pts[[2]]
-  )
+  ) %>%
+    as_tibble()
+
   poly2 <- update_centroid(poly2)
 
   return(list(poly1, poly2))
+}
+
+split_poly_multiple <- function(poly,
+                                side1 = 2, side2 = 4, p1=0.5, p2=0.5,
+                                n = 2) {
+  while (n > 0) {
+    if ('list' %in% class(poly)) {
+      poly <- map(poly, split_poly, side1, side2, p1, p2) %>%
+       flatten()
+    } else {
+      poly <- split_poly(poly, side1, side2, p1, p2)
+    }
+    n <- n - 1
+  }
+
+  return(poly)
 }
 
 update_centroid <- function(poly) {

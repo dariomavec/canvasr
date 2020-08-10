@@ -11,9 +11,9 @@
 canvas_template <- function(
   width = 300,
   height = 500,
-  bg_color = '#ffffff',
-  accent_color = '#933A16',
-  file_name = '___',
+  bgColour = '#ffffff',
+  accentColour = '#933A16',
+  fileName = '___',
   ...
   )
 {
@@ -26,8 +26,8 @@ canvas_template <- function(
 
   plot <- grid %>%
     ggcanvas(aes(x, y),
-             width = width, height = height, bg_color = bgColor) +
+             width = width, height = height, bgColour = bgColour) +
     geom_point()
 
-  save_plot(plot, file_name, width = width, height = height, ...)
+  save_plot(plot, fileName, width = width, height = height, ...)
 }
