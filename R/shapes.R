@@ -22,7 +22,8 @@ new_rectangle <- function(x, y, w, h) {
       pts = pts,
       x = x,
       y = y,
-      h = h
+      h = h,
+      w = w
     ),
     class = c('rectangle', 'poly')
   )
@@ -105,13 +106,12 @@ rotate.default <- function(poly, theta) {
 rotate.poly <- function(poly, theta = -pi/4) {
   R <- matrix(c(cos(theta), -sin(theta),
                 sin(theta), cos(theta)),
-              nrow = 2)
+              nrow = 2, dimnames = list(1:2, c('x', 'y')))
 
   origin <- c(poly$x, poly$y)
   poly <- translate(poly, -origin[1], -origin[2])
 
   poly$pts <- as.matrix(poly$pts) %*% R %>%
-    magrittr::set_colnames(c('x', 'y')) %>%
     as_tibble()
 
   poly <- translate(poly, origin[1], origin[2])
@@ -160,7 +160,7 @@ split_square <- function(s) {
   )
 }
 
-split_poly <- function(poly, side1 = 2, side2 = 2, p1=0.5, p2=0.5) {
+split_poly <- function(poly, side1 = 1, side2 = 3, p1=0.5, p2=0.5) {
   stopifnot(0 < side1 & side1 < side2)
   stopifnot(side2 < nrow(poly$pts))
   stopifnot(0 <= p1 & p1 <= 1)
@@ -169,28 +169,27 @@ split_poly <- function(poly, side1 = 2, side2 = 2, p1=0.5, p2=0.5) {
   poly$h <- NULL
   poly1 <- poly2 <- poly
 
-  new_pts <- list(
-    (1 - p1) * poly$pts[side1,] + p1 * poly$pts[(side1 + 1),],
-    (1 - p2) * poly$pts[side2,] + p2 * poly$pts[(side2 + 1),]
-  )
+  point1 <- matrix(c(1-p1, p1), nrow = 1) %*% as.matrix(poly$pts[side1:(side1+1),],
+                                                        dimnames = list(1:2, c('x', 'y'))) %>%
+    as_tibble()
+  point2 <- matrix(c(1-p2, p2), nrow = 1) %*% as.matrix(poly$pts[side2:(side2+1),],
+                                                        dimnames = list(1:2, c('x', 'y'))) %>%
+    as_tibble()
 
   poly1$pts <- bind_rows(
     poly$pts[1:side1,],
-    new_pts[[1]],
-    new_pts[[2]],
+    point1,
+    point2,
     poly$pts[(side2+1):nrow(poly$pts),],
-  ) %>%
-    as_tibble()
+  )
   poly1 <- update_centroid(poly1)
 
   poly2$pts <- bind_rows(
-    new_pts[[2]],
-    new_pts[[1]],
+    point2,
+    point1,
     poly$pts[(side1 + 1):side2,],
-    new_pts[[2]]
-  ) %>%
-    as_tibble()
-
+    point2
+  )
   poly2 <- update_centroid(poly2)
 
   return(list(poly1, poly2))
