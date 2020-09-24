@@ -2,14 +2,19 @@
 % Please edit documentation in R/11-breton.R
 \name{canvas11}
 \alias{canvas11}
-\title{Canvas 10}
+\title{Canvas 11}
 \usage{
 canvas11(
   width = 300,
   height = 500,
-  bg_color = "#ffffff",
-  accent_color = "#933A16",
-  file_name = "11-breton",
+  squareHeight = 150,
+  lineSize = 1,
+  nRows = 6,
+  nCols = 4,
+  bgColor = "#ffffff",
+  lineColor = "#933A16",
+  fillColor = "gray90",
+  fileName = "11-breton",
   ...
 )
 }
@@ -17,5 +22,5 @@ canvas11(
 
 }
 \description{
-Canvas 10
+Canvas 11
 }

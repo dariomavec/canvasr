@@ -12,7 +12,7 @@ canvas11 <- function(
   width = 300,
   height = 500,
   squareHeight = 150,
-  lineSize = 2.5,
+  lineSize = 1,
   nRows = 6,
   nCols = 4,
   bgColor = '#ffffff',

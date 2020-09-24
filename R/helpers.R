@@ -43,29 +43,47 @@ save_plot <- function(
 }
 
 #' @import magick
-save_gif <- function(
+#' @import animation
+save_vid <- function(
   file_name,
   path = 'output',
+  output_type = 'mp4',
   repeat_last = 12,
   fps = 4,
   optimize = TRUE) {
   files <- list.files(path=glue("{path}/{file_name}/"), pattern = '*.png', full.names = TRUE)
-  files <- c(rep(last(files), repeat_last), files)
-  final_img <- image_read(files[1]) %>%
+  final_img <- image_read(last(files)) %>%
     image_info()
-  if (optimize) {
-    final_geometry <- paste0(round(final_img$width / 3, 0), 'x',
-                             round(final_img$height / 3, 0))#, '!"')
-  }
 
-  files %>%
-    image_read() %>% # reads each path file
-    image_join() %>% # joins image
+  dims <- list(
+    width = round(final_img$width / 2, 0),
+    height = round(final_img$height / 2, 0)
+  )
+  final_geometry <- paste0(dims$width, 'x', dims$height)
+
+  imgs <- c(image_read(last(files)), image_read(files)
+  ) %>%
+    # image_join() %>% # joins image
     image_apply(function(x) x %>%
                   image_resize(final_geometry) %>%
-                  image_extent(final_geometry)) %>%
-    image_animate(fps=fps, optimize = optimize) %>% # animates, can opt for number of loops
-    image_write(glue("{path}/{file_name}.gif"))
+                  image_extent(final_geometry, color = '#fff'))
+
+  if (output_type == 'mp4') {
+    saveVideo({
+      walk(1:length(imgs), ~{
+        par(mar = rep(0, 4))
+        plot(as.raster(imgs[.x]))
+      })
+    },
+    video.name = glue("{path}/{file_name}.mp4"),
+    ani.width = dims$width + if(dims$width %% 2 == 1) 1 else 0,
+    ani.height = dims$height + if(dims$height %% 2 == 1) 1 else 0,
+    interval = 1 / fps)
+  } else if (output_type == 'gif') {
+    c(rep(imgs[1], repeat_last), imgs[-1]) %>%
+      image_animate(fps=fps, optimize = optimize) %>% # animates, can opt for number of loops
+      image_write(glue("{path}/{file_name}.gif"))
+  }
 }
 
 #' Make Gradient

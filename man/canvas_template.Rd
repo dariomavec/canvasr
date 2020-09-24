@@ -2,14 +2,14 @@
 % Please edit documentation in R/canvas-template.R
 \name{canvas_template}
 \alias{canvas_template}
-\title{Canvas 2}
+\title{Canvas _}
 \usage{
 canvas_template(
   width = 300,
   height = 500,
-  bg_color = "#ffffff",
-  accent_color = "#933A16",
-  file_name = "___",
+  bgColour = "#ffffff",
+  accentColour = "#933A16",
+  fileName = "___",
   ...
 )
 }
@@ -17,5 +17,5 @@ canvas_template(
 
 }
 \description{
-Canvas 2
+Canvas _
 }

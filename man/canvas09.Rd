@@ -7,13 +7,13 @@
 canvas09(
   width = 300,
   height = 500,
-  bg_color = "#29274C",
+  bgColour = "#29274C",
   accent_color = "#933A16",
   line_colors = rep(c("#337ca0", "#3ec300", "#fffc31", "#ff1d15", "#e13700"), 50),
   file_name = "09-prisma",
-  strips = 15,
+  strips = 10,
   r = 50,
-  n = 60,
+  n = 150,
   ...
 )
 }

@@ -1,3 +1,34 @@
+new_hexagon <- function(x, y, r) {
+  stopifnot(typeof(x) %in% c('integer', 'double'))
+  stopifnot(typeof(y) %in% c('integer', 'double'))
+  stopifnot(typeof(r) %in% c('integer', 'double'))
+
+  pts <- tibble(
+    theta = seq(0, 2*pi, pi / 3)
+  ) %>%
+    mutate(
+      x = !!x + r * cos(theta),
+      y = !!y + r * sin(theta)
+    ) %>%
+    select(-theta)
+
+  structure(
+    list(
+      pts = pts,
+      x = x,
+      y = y,
+      r = r
+    ),
+    class = c('hexagon', 'poly')
+  )
+}
+
+hexagon <- function(x, y, r) {
+  new_hexagon(x, y, r)
+}
+
+
+
 new_rectangle <- function(x, y, w, h) {
   stopifnot(typeof(x) == 'double')
   stopifnot(typeof(y) == 'double')

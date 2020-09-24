@@ -7,7 +7,7 @@
 canvas06(
   width = 300,
   height = 500,
-  bg_color = "#06060a",
+  bgColour = "#06060a",
   accent_color = "#c49102",
   planet_color = "#c43235",
   file_name = "06-tomorrow",

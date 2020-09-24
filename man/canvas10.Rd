@@ -7,7 +7,7 @@
 canvas10(
   width = 300,
   height = 500,
-  bg_color = "#ffffff",
+  bgColour = "#ffffff",
   accent_color = "#933A16",
   file_name = "10-sundial",
   steps = 40,

@@ -13,6 +13,7 @@ canvas16 <- function(
   height = 500,
   bgColour = '#ffffff',
   accentColours = c("#50514f","#f25f5c","#ffe066","#247ba0","#70c1b3","#8e9dcc","#d9dbf1","#f3d9dc"),
+  # accentColours = c("#94690c","#8c826d","#8292b3","#d4ba83","#a2ebd4","#6e6568","#359476","#fcb10d"),
   fileName = '16-boxer',
   colMinWidth = 10,
   colMaxWidth = 50,
@@ -60,4 +61,4 @@ canvas16 <- function(
   save_plot(plot, fileName, width = width, height = height, ...)
 }
 
-canvas16()
+# canvas16()

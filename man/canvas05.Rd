@@ -7,7 +7,7 @@
 canvas05(
   width = 300,
   height = 500,
-  bg_color = "#e62739",
+  bgColour = "#e62739",
   file_name = "05-charles",
   ...
 )
